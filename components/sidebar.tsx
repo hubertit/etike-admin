@@ -9,16 +9,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   LayoutDashboard,
   Users,
-  CreditCard,
-  ArrowLeftRight,
-  Webhook,
+  Package,
+  ShoppingCart,
+  MessageCircle,
   BarChart3,
   FileText,
-  Shield,
-  HelpCircle,
   Settings,
   ChevronLeft,
-  Zap,
 } from "lucide-react"
 
 const menuItems = [
@@ -32,37 +29,32 @@ const menuItems = [
 
 const menuGroups = [
   {
-    title: "MERCHANTS",
+    title: "TOUR MANAGEMENT",
     items: [
       {
-        title: "Merchants",
-        href: "/merchants",
-        icon: Users,
+        title: "Tour Packages",
+        href: "/packages",
+        icon: Package,
+      },
+      {
+        title: "Orders",
+        href: "/orders",
+        icon: ShoppingCart,
       },
     ],
   },
   {
-    title: "PAYMENT PROCESSING",
+    title: "CUSTOMER MANAGEMENT",
     items: [
       {
-        title: "Gateways",
-        href: "/gateways",
-        icon: Zap,
+        title: "Customers",
+        href: "/customers",
+        icon: Users,
       },
       {
-        title: "Transactions",
-        href: "/transactions",
-        icon: CreditCard,
-      },
-      {
-        title: "Settlements",
-        href: "/settlements",
-        icon: ArrowLeftRight,
-      },
-      {
-        title: "Webhooks",
-        href: "/webhooks",
-        icon: Webhook,
+        title: "Communications",
+        href: "/communications",
+        icon: MessageCircle,
       },
     ],
   },
@@ -84,16 +76,6 @@ const menuGroups = [
   {
     title: "SYSTEM",
     items: [
-      {
-        title: "Security",
-        href: "/security",
-        icon: Shield,
-      },
-      {
-        title: "Support",
-        href: "/support",
-        icon: HelpCircle,
-      },
       {
         title: "Settings",
         href: "/settings",
@@ -133,7 +115,7 @@ export function Sidebar({ className }: SidebarProps) {
           </Avatar>
         </div>
         <p className="text-base font-semibold text-gray-900">John Doe</p>
-        <p className="text-sm text-gray-400">Administrator</p>
+        <p className="text-sm text-gray-400">Tour Operator</p>
       </div>
 
       {/* Navigation */}

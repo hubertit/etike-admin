@@ -29,7 +29,7 @@ export function NotificationBell() {
     },
     {
       id: 4,
-      message: "Monthly revenue report is ready",
+      message: "Monthly booking revenue report is ready",
       time: "1 day ago",
       type: "info",
       unread: false,

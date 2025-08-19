@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Etike Admin",
-  description: "Admin dashboard for Etike payment processing system",
+  description: "Admin dashboard for Etike tour operator management system",
   generator: "v0.dev",
 }
 

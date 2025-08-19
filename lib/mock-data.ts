@@ -33,48 +33,58 @@ export const mockMerchants = [
   },
 ]
 
-export const mockTransactions = [
+export const mockBookings = [
   {
-    id: "TXN001",
+    id: "BKG001",
     method: "Credit Card",
-    amount: 299.99,
-    status: "Completed",
+    amount: 1800,
+    status: "Confirmed",
     date: "2024-03-15 14:30",
-    merchant: "TechCorp Solutions",
+    tourPackage: "Gorilla Trekking Adventure",
+    customer: "John Doe",
   },
   {
-    id: "TXN002",
-    method: "PayPal",
-    amount: 149.5,
+    id: "BKG002",
+    method: "Bank Transfer",
+    amount: 1200,
     status: "Pending",
     date: "2024-03-15 13:45",
-    merchant: "E-Shop Plus",
+    tourPackage: "Lake Kivu Relaxation",
+    customer: "Sarah Johnson",
   },
   {
-    id: "TXN003",
-    method: "Bank Transfer",
-    amount: 599.0,
-    status: "Failed",
-    date: "2024-03-15 12:20",
-    merchant: "Digital Mart",
-  },
-  {
-    id: "TXN004",
+    id: "BKG003",
     method: "Credit Card",
-    amount: 89.99,
-    status: "Completed",
-    date: "2024-03-15 11:15",
-    merchant: "Quick Pay Store",
+    amount: 2400,
+    status: "Cancelled",
+    date: "2024-03-15 12:20",
+    tourPackage: "Cultural Heritage Tour",
+    customer: "Mike Wilson",
   },
   {
-    id: "TXN005",
-    method: "Debit Card",
-    amount: 199.99,
-    status: "Completed",
+    id: "BKG004",
+    method: "PayPal",
+    amount: 1800,
+    status: "Confirmed",
+    date: "2024-03-15 11:15",
+    tourPackage: "Gorilla Trekking Adventure",
+    customer: "Emma Brown",
+  },
+  {
+    id: "BKG005",
+    method: "Credit Card",
+    amount: 1200,
+    status: "Confirmed",
     date: "2024-03-15 10:30",
-    merchant: "TechCorp Solutions",
+    tourPackage: "Lake Kivu Relaxation",
+    customer: "David Smith",
   },
 ]
+
+export const mockTransactions = mockBookings.map((booking) => ({
+  ...booking,
+  merchant: booking.customer,
+}))
 
 export const mockSettlements = [
   { id: "SET001", merchant: "TechCorp Solutions", amount: 2499.99, status: "Completed", date: "2024-03-14" },
@@ -107,7 +117,7 @@ export const mockWebhooks = [
   },
 ]
 
-export const revenueData = [
+export const bookingRevenueData = [
   { month: "Jan", revenue: 45000 },
   { month: "Feb", revenue: 52000 },
   { month: "Mar", revenue: 48000 },
@@ -115,3 +125,5 @@ export const revenueData = [
   { month: "May", revenue: 55000 },
   { month: "Jun", revenue: 67000 },
 ]
+
+export const revenueData = bookingRevenueData

@@ -3,22 +3,22 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/ui/status-badge"
-import { mockTransactions, revenueData } from "@/lib/mock-data"
-import { Users, DollarSign, CreditCard, Clock } from "lucide-react"
+import { StatsCard } from "@/components/stats-card"
+import { mockTransactions, bookingRevenueData } from "@/lib/mock-data"
+import { Users, DollarSign, MapPin, Calendar } from "lucide-react"
 import dynamic from "next/dynamic"
 
 // Dynamically import ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 export default function DashboardPage() {
-  const recentTransactions = mockTransactions.slice(0, 5)
+  const recentBookings = mockTransactions.slice(0, 5)
 
-  // Prepare data for Revenue Trend Area Chart
   const areaChartData = {
     series: [
       {
-        name: "Revenue",
-        data: revenueData.map((item) => item.revenue),
+        name: "Booking Revenue",
+        data: bookingRevenueData.map((item) => item.revenue),
       },
     ],
     options: {
@@ -32,7 +32,7 @@ export default function DashboardPage() {
           show: false,
         },
       },
-      colors: ["#f34d11"],
+      colors: ["#0f3373"],
       dataLabels: {
         enabled: false,
       },
@@ -58,7 +58,7 @@ export default function DashboardPage() {
         },
       },
       xaxis: {
-        categories: revenueData.map((item) => item.month),
+        categories: bookingRevenueData.map((item) => item.month),
         axisBorder: {
           show: false,
         },
@@ -93,16 +93,15 @@ export default function DashboardPage() {
     },
   }
 
-  // Prepare data for Payment Methods Pie Chart
   const pieChartData = {
-    series: [45, 25, 20, 10],
+    series: [35, 30, 35],
     options: {
       chart: {
         type: "pie" as const,
         height: 280,
       },
-      labels: ["Credit Card", "Bank Transfer", "PayPal", "Other"],
-      colors: ["#f34d11", "#ff6b35", "#ffab00", "#36b9cc"],
+      labels: ["Active & Adventure", "Community & Cultural", "Eco-Tourism"],
+      colors: ["#0f3373", "#b42841", "#1e4a8c"],
       dataLabels: {
         enabled: true,
         formatter: (val: number) => Math.round(val) + "%",
@@ -161,69 +160,46 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Users className="h-6 w-6 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Merchants</p>
-                <p className="text-2xl font-bold text-gray-900">1,234</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">$67,000</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-[#f34d11] bg-opacity-10 rounded-lg">
-                <CreditCard className="h-6 w-6 text-[#f34d11]" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Transactions Today</p>
-                <p className="text-2xl font-bold text-gray-900">2,847</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <Clock className="h-6 w-6 text-yellow-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending Settlements</p>
-                <p className="text-2xl font-bold text-gray-900">$12,450</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <StatsCard
+          title="Total Customers"
+          value="1,234"
+          icon={Users}
+          iconColor="text-blue-600"
+          iconBgColor="bg-blue-100"
+          trend={{ value: "5.2%", isPositive: true }}
+        />
+        <StatsCard
+          title="Monthly Revenue"
+          value="$67,000"
+          icon={DollarSign}
+          iconColor="text-green-600"
+          iconBgColor="bg-green-100"
+          trend={{ value: "12.3%", isPositive: true }}
+        />
+        <StatsCard
+          title="Active Packages"
+          value="47"
+          icon={MapPin}
+          iconColor="text-[#0f3373]"
+          iconBgColor="bg-blue-100"
+          trend={{ value: "2.1%", isPositive: true }}
+        />
+        <StatsCard
+          title="Bookings"
+          value="12"
+          icon={Calendar}
+          iconColor="text-yellow-600"
+          iconBgColor="bg-yellow-100"
+          trend={{ value: "8.7%", isPositive: true }}
+        />
       </div>
 
-      {/* Revenue Chart and Payment Methods */}
+      {/* Revenue Chart and Tour Package Types */}
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
         {/* Revenue Chart - 4/6 width */}
         <Card className="lg:col-span-4">
           <CardHeader>
-            <h3 className="text-lg font-medium text-gray-900">Revenue Trend</h3>
+            <h3 className="text-lg font-medium text-gray-900">Booking Revenue Trend</h3>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -238,10 +214,10 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Payment Methods Pie Chart - 2/6 width */}
+        {/* Tour Package Types Pie Chart - 2/6 width */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <h3 className="text-lg font-medium text-gray-900">Payment Methods</h3>
+            <h3 className="text-lg font-medium text-gray-900">Popular Tour Types</h3>
           </CardHeader>
           <CardContent>
             <div className="h-80 flex flex-col">
@@ -259,12 +235,12 @@ export default function DashboardPage() {
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
-                    <p className="text-lg font-bold text-gray-900">4</p>
-                    <p className="text-xs text-gray-500">Methods</p>
+                    <p className="text-lg font-bold text-gray-900">3</p>
+                    <p className="text-xs text-gray-500">Tour Types</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-[#f34d11]">45%</p>
-                    <p className="text-xs text-gray-500">Top Method</p>
+                    <p className="text-lg font-bold text-[#0f3373]">35%</p>
+                    <p className="text-xs text-gray-500">Most Popular</p>
                   </div>
                 </div>
               </div>
@@ -273,32 +249,32 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Transactions */}
+      {/* Recent Bookings */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-medium text-gray-900">Recent Transactions</h3>
+          <h3 className="text-lg font-medium text-gray-900">Recent Bookings</h3>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Reference</TableHead>
-                <TableHead>Method</TableHead>
+                <TableHead>Booking ID</TableHead>
+                <TableHead>Tour Package</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentTransactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell className="font-medium">{transaction.id}</TableCell>
-                  <TableCell>{transaction.method}</TableCell>
-                  <TableCell>${transaction.amount}</TableCell>
+              {recentBookings.map((booking) => (
+                <TableRow key={booking.id}>
+                  <TableCell className="font-medium">{booking.id}</TableCell>
+                  <TableCell>Gorilla Trekking Safari</TableCell>
+                  <TableCell>${booking.amount}</TableCell>
                   <TableCell>
-                    <StatusBadge status={transaction.status} />
+                    <StatusBadge status={booking.status} />
                   </TableCell>
-                  <TableCell>{transaction.date}</TableCell>
+                  <TableCell>{booking.date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

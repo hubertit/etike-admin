@@ -11,33 +11,33 @@ export default function ReportsPage() {
 
   const reportTypes = [
     {
-      id: "transaction-summary",
-      name: "Transaction Summary",
-      description: "Comprehensive overview of all transactions",
+      id: "booking-summary",
+      name: "Booking Summary",
+      description: "Comprehensive overview of all tour bookings",
       icon: FileText,
       lastGenerated: "2024-01-15 14:30",
       size: "2.4 MB",
     },
     {
-      id: "merchant-performance",
-      name: "Merchant Performance",
-      description: "Individual merchant analytics and metrics",
+      id: "tour-performance",
+      name: "Tour Performance",
+      description: "Individual tour package analytics and metrics",
       icon: FileText,
       lastGenerated: "2024-01-15 12:15",
       size: "1.8 MB",
     },
     {
-      id: "settlement-report",
-      name: "Settlement Report",
-      description: "Detailed settlement and payout information",
+      id: "customer-report",
+      name: "Customer Report",
+      description: "Customer demographics and booking patterns",
       icon: FileText,
       lastGenerated: "2024-01-14 16:45",
       size: "3.1 MB",
     },
     {
-      id: "compliance-report",
-      name: "Compliance Report",
-      description: "Regulatory compliance and audit trail",
+      id: "revenue-report",
+      name: "Revenue Report",
+      description: "Financial performance and revenue analysis",
       icon: FileText,
       lastGenerated: "2024-01-14 09:20",
       size: "5.2 MB",
@@ -56,7 +56,7 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Reports" description="Generate and download comprehensive business reports" />
+      <PageHeader title="Reports" description="Generate and download comprehensive tour operation reports" />
 
       {/* Report Configuration */}
       <Card>
@@ -73,7 +73,7 @@ export default function ReportsPage() {
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f34d11] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
               >
                 <option value="last-7-days">Last 7 Days</option>
                 <option value="last-30-days">Last 30 Days</option>
@@ -90,7 +90,7 @@ export default function ReportsPage() {
               <select
                 value={selectedFormat}
                 onChange={(e) => setSelectedFormat(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f34d11] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
               >
                 <option value="pdf">PDF</option>
                 <option value="excel">Excel</option>
@@ -102,10 +102,10 @@ export default function ReportsPage() {
                 <Filter className="inline h-4 w-4 mr-1" />
                 Filter
               </label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f34d11] focus:border-transparent">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent">
                 <option value="all">All Data</option>
-                <option value="successful">Successful Only</option>
-                <option value="failed">Failed Only</option>
+                <option value="confirmed">Confirmed Only</option>
+                <option value="cancelled">Cancelled Only</option>
                 <option value="pending">Pending Only</option>
               </select>
             </div>
@@ -122,8 +122,8 @@ export default function ReportsPage() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3">
-                    <div className="p-2 bg-[#f34d11] bg-opacity-10 rounded-lg">
-                      <Icon className="h-6 w-6 text-[#f34d11]" />
+                    <div className="p-2 bg-[#0f3373] bg-opacity-10 rounded-lg">
+                      <Icon className="h-6 w-6 text-[#0f3373]" />
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-900">{report.name}</h3>
@@ -138,13 +138,13 @@ export default function ReportsPage() {
                 <div className="mt-4 flex space-x-2">
                   <button
                     onClick={() => handleGenerateReport(report.id)}
-                    className="flex-1 px-3 py-2 text-sm font-medium text-[#f34d11] border border-[#f34d11] rounded-md hover:bg-[#f34d11] hover:text-white transition-colors"
+                    className="flex-1 px-3 py-2 text-sm font-medium text-[#0f3373] border border-[#0f3373] rounded-md hover:bg-[#0f3373] hover:text-white transition-colors"
                   >
                     Generate New
                   </button>
                   <button
                     onClick={() => handleDownloadReport(report.id)}
-                    className="px-3 py-2 text-sm font-medium text-white bg-[#f34d11] rounded-md hover:bg-[#d63d0e] transition-colors"
+                    className="px-3 py-2 text-sm font-medium text-white bg-[#0f3373] rounded-md hover:bg-[#0a2a5c] transition-colors"
                   >
                     <Download className="h-4 w-4" />
                   </button>
@@ -163,10 +163,10 @@ export default function ReportsPage() {
         <CardContent>
           <div className="space-y-4">
             {[
-              { name: "Transaction Summary - January 2024", date: "2024-01-15", size: "2.4 MB", format: "PDF" },
-              { name: "Merchant Performance - Q4 2023", date: "2024-01-10", size: "1.8 MB", format: "Excel" },
-              { name: "Settlement Report - December 2023", date: "2024-01-05", size: "3.1 MB", format: "PDF" },
-              { name: "Compliance Report - 2023", date: "2024-01-01", size: "5.2 MB", format: "PDF" },
+              { name: "Booking Summary - January 2024", date: "2024-01-15", size: "2.4 MB", format: "PDF" },
+              { name: "Tour Performance - Q4 2023", date: "2024-01-10", size: "1.8 MB", format: "Excel" },
+              { name: "Customer Report - December 2023", date: "2024-01-05", size: "3.1 MB", format: "PDF" },
+              { name: "Revenue Report - 2023", date: "2024-01-01", size: "5.2 MB", format: "PDF" },
             ].map((report, index) => (
               <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-3">
@@ -178,7 +178,7 @@ export default function ReportsPage() {
                     </p>
                   </div>
                 </div>
-                <button className="p-2 text-gray-400 hover:text-[#f34d11] transition-colors">
+                <button className="p-2 text-gray-400 hover:text-[#0f3373] transition-colors">
                   <Download className="h-4 w-4" />
                 </button>
               </div>
