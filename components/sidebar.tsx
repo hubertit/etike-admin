@@ -6,17 +6,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  LayoutDashboard,
-  Users,
-  Package,
-  ShoppingCart,
-  MessageCircle,
-  BarChart3,
-  FileText,
-  Settings,
-  ChevronLeft,
-} from "lucide-react"
+import { LayoutDashboard, Users, Package, ShoppingCart, MessageCircle } from "lucide-react"
 
 const menuItems = [
   {
@@ -58,31 +48,6 @@ const menuGroups = [
       },
     ],
   },
-  {
-    title: "ANALYTICS",
-    items: [
-      {
-        title: "Analytics",
-        href: "/analytics",
-        icon: BarChart3,
-      },
-      {
-        title: "Reports",
-        href: "/reports",
-        icon: FileText,
-      },
-    ],
-  },
-  {
-    title: "SYSTEM",
-    items: [
-      {
-        title: "Settings",
-        href: "/settings",
-        icon: Settings,
-      },
-    ],
-  },
 ]
 
 interface SidebarProps {
@@ -102,7 +67,7 @@ export function Sidebar({ className }: SidebarProps) {
           <span className="text-xl font-bold text-white tracking-wide">Etike</span>
         </div>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-          <ChevronLeft className="h-6 w-6" />
+          {/* ChevronLeft className="h-6 w-6" */}
         </Button>
       </div>
 

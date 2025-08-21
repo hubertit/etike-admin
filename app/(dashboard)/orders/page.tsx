@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/ui/status-badge"
-import { Search, Eye, Download, Calendar, Users, MapPin, X, Phone, Mail, CreditCard } from "lucide-react"
+import { Search, Eye, Download, Calendar, Users, MapPin, X, Phone, Mail } from "lucide-react"
 
 export default function OrdersPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -359,7 +359,7 @@ export default function OrdersPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Payment Information</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Booking Information</h3>
                   <div className="space-y-2 text-sm">
                     <p>
                       <span className="font-medium">Package Price:</span> ${selectedOrder.packagePrice} per person
@@ -368,10 +368,6 @@ export default function OrdersPage() {
                       <span className="font-medium">Total Amount:</span>{" "}
                       <span className="text-lg font-bold text-[#0f3373]">${selectedOrder.totalAmount}</span>
                     </p>
-                    <div className="flex items-center">
-                      <CreditCard className="h-4 w-4 text-gray-400 mr-2" />
-                      {selectedOrder.paymentMethod} - {selectedOrder.paymentStatus}
-                    </div>
                   </div>
                 </div>
               </div>

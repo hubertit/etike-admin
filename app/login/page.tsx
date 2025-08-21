@@ -39,8 +39,9 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Log In to</h2>
-            <h2 className="text-3xl font-bold text-[#0f3373] mb-6">Etike</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              Log In to <span className="text-[#0f3373]">Etike</span>
+            </h2>
             <p className="text-sm text-gray-600 mb-8">
               New Here?{" "}
               <button className="text-[#0f3373] hover:text-[#0a2a5c] underline font-medium">Contact admin</button>
