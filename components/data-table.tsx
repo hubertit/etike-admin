@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 interface Column {
   key: string
   label: string
-  render?: (value: any, row: any) => React.ReactNode
+  render?: (value: any, row: any, index?: number) => React.ReactNode
 }
 
 interface DataTableProps {
@@ -38,7 +38,7 @@ export function DataTable({ title, columns, data, actions }: DataTableProps) {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.key} className={column.key === columns[0].key ? "font-medium" : ""}>
-                    {column.render ? column.render(row[column.key], row) : row[column.key]}
+                    {column.render ? column.render(row[column.key], row, index) : row[column.key]}
                   </TableCell>
                 ))}
               </TableRow>

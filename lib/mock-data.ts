@@ -40,7 +40,7 @@ export const mockBookings = [
     amount: 1800,
     status: "Confirmed",
     date: "2024-03-15 14:30",
-    tourPackage: "Gorilla Trekking Adventure",
+    servicePackage: "Luxury Hotel Suite Package",
     customer: "John Doe",
   },
   {
@@ -49,7 +49,7 @@ export const mockBookings = [
     amount: 1200,
     status: "Pending",
     date: "2024-03-15 13:45",
-    tourPackage: "Lake Kivu Relaxation",
+    servicePackage: "Spa & Wellness Retreat",
     customer: "Sarah Johnson",
   },
   {
@@ -58,7 +58,7 @@ export const mockBookings = [
     amount: 2400,
     status: "Cancelled",
     date: "2024-03-15 12:20",
-    tourPackage: "Cultural Heritage Tour",
+    servicePackage: "Fine Dining Experience",
     customer: "Mike Wilson",
   },
   {
@@ -67,7 +67,7 @@ export const mockBookings = [
     amount: 1800,
     status: "Confirmed",
     date: "2024-03-15 11:15",
-    tourPackage: "Gorilla Trekking Adventure",
+    servicePackage: "Luxury Hotel Suite Package",
     customer: "Emma Brown",
   },
   {
@@ -76,7 +76,7 @@ export const mockBookings = [
     amount: 1200,
     status: "Confirmed",
     date: "2024-03-15 10:30",
-    tourPackage: "Lake Kivu Relaxation",
+    servicePackage: "Spa & Wellness Retreat",
     customer: "David Smith",
   },
 ]
@@ -118,12 +118,9 @@ export const mockWebhooks = [
 ]
 
 export const bookingRevenueData = [
-  { month: "Jan", revenue: 45000 },
-  { month: "Feb", revenue: 52000 },
-  { month: "Mar", revenue: 48000 },
-  { month: "Apr", revenue: 61000 },
-  { month: "May", revenue: 55000 },
-  { month: "Jun", revenue: 67000 },
+  { month: "Jul", revenue: 12000 },
+  { month: "Aug", revenue: 18500 },
+  { month: "Sep", revenue: 22100 },
 ]
 
 export const revenueData = bookingRevenueData

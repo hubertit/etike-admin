@@ -160,15 +160,15 @@ export default function LoginPage() {
       <div className="hidden lg:block relative flex-1">
         <img
           className="absolute inset-0 h-full w-full object-cover"
-          src="/images/etike-login-cover.jpg"
-          alt="Etike - Tour operator management platform"
+          src="https://res.cloudinary.com/dhwqnur8s/image/upload/v1750079390/premiumride_lngsp9.jpg"
+          alt="Etike - Hospitality management platform"
           crossOrigin="anonymous"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 
         <div className="absolute bottom-8 left-8 text-white">
           <h3 className="text-2xl font-bold mb-2">Discover Amazing Journeys</h3>
-          <p className="text-lg opacity-90">Empowering tour operators to create unforgettable experiences</p>
+          <p className="text-lg opacity-90">Empowering hospitality professionals to create unforgettable experiences</p>
         </div>
       </div>
     </div>

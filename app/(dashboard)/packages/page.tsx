@@ -2,79 +2,89 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Modal } from "@/components/ui/modal"
-import { Plus, Search, Edit, Trash2, MapPin, Calendar, Users } from "lucide-react"
+import { Plus, Search, Edit, Trash2, MapPin, Calendar, Users, Loader2 } from "lucide-react"
 
 export default function PackagesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   const [editingPackage, setEditingPackage] = useState<any>(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const [packages, setPackages] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    destination: "",
-    duration: "",
     price: "",
-    maxGuests: "",
-    category: "",
-    inclusions: "",
-    exclusions: "",
+    poster: "",
+    slug: "",
+    areas: "",
+    food: "",
+    drinks: "",
+    parking: "",
+    businessBox: "",
+    requirements: "",
   })
 
-  const mockPackages = [
-    {
-      id: "PKG-001",
-      name: "Gorilla Trekking Adventure",
-      destination: "Volcanoes National Park",
-      duration: "3 days",
-      price: 1200,
-      maxGuests: 8,
-      category: "Wildlife",
-      status: "active",
-      bookings: 15,
-      description: "Experience the thrill of encountering mountain gorillas in their natural habitat",
-      inclusions: "Park fees, Guide, Transportation, Accommodation",
-      exclusions: "International flights, Personal expenses",
-    },
-    {
-      id: "PKG-002",
-      name: "Lake Kivu Relaxation",
-      destination: "Lake Kivu",
-      duration: "2 days",
-      price: 450,
-      maxGuests: 12,
-      category: "Leisure",
-      status: "active",
-      bookings: 8,
-      description: "Unwind by the beautiful shores of Lake Kivu with stunning sunset views",
-      inclusions: "Accommodation, Meals, Boat ride, Airport transfer",
-      exclusions: "Alcoholic beverages, Spa treatments",
-    },
-    {
-      id: "PKG-003",
-      name: "Cultural Heritage Tour",
-      destination: "Kigali & Butare",
-      duration: "4 days",
-      price: 680,
-      maxGuests: 15,
-      category: "Culture",
-      status: "draft",
-      bookings: 0,
-      description: "Discover Rwanda's rich cultural heritage and historical sites",
-      inclusions: "Museum entries, Cultural guide, Transportation, Meals",
-      exclusions: "Shopping, Personal guide tips",
-    },
-  ]
+  // Fetch packages from API
+  const fetchPackages = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const response = await fetch('https://api.etike.rw/vipPackages/list.php')
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const result = await response.json()
+      
+      if (result.code === 200 && result.status === 'success') {
+        // Transform API data to match our format
+        const transformedPackages = result.data.map((pkg: any) => ({
+          id: pkg.code,
+          name: pkg.name,
+          description: pkg.description,
+          price: parseFloat(pkg.price),
+          poster: pkg.poster,
+          slug: pkg.slug,
+          schedule: pkg.schedule || [],
+          areas: pkg.areas || [],
+          food: pkg.food || [],
+          drinks: pkg.drinks || [],
+          parking: pkg.parking || [],
+          businessBox: pkg.businessBox || [],
+          requirements: pkg.requirements || [],
+          status: "active", // Default status
+          bookings: Math.floor(Math.random() * 20) + 1, // Random booking count for demo
+        }))
+        
+        setPackages(transformedPackages)
+      } else {
+        throw new Error('Invalid API response format')
+      }
+    } catch (err) {
+      console.error('Error fetching packages:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch packages')
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  const filteredPackages = mockPackages.filter(
+  useEffect(() => {
+    fetchPackages()
+  }, [])
+
+  const filteredPackages = packages.filter(
     (pkg) =>
       pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.destination.toLowerCase().includes(searchTerm.toLowerCase()),
+      pkg.description.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   const handleEdit = (pkg: any) => {
@@ -82,13 +92,15 @@ export default function PackagesPage() {
     setFormData({
       name: pkg.name,
       description: pkg.description,
-      destination: pkg.destination,
-      duration: pkg.duration,
       price: pkg.price.toString(),
-      maxGuests: pkg.maxGuests.toString(),
-      category: pkg.category,
-      inclusions: pkg.inclusions,
-      exclusions: pkg.exclusions,
+      poster: pkg.poster || "",
+      slug: pkg.slug || "",
+      areas: pkg.areas ? pkg.areas.map((area: any) => area.title).join(", ") : "",
+      food: pkg.food ? pkg.food.map((item: any) => item.title).join(", ") : "",
+      drinks: pkg.drinks ? pkg.drinks.map((item: any) => item.title).join(", ") : "",
+      parking: pkg.parking ? pkg.parking.map((item: any) => item.title).join(", ") : "",
+      businessBox: pkg.businessBox ? pkg.businessBox.map((item: any) => item.title).join(", ") : "",
+      requirements: pkg.requirements ? pkg.requirements.join(", ") : "",
     })
     setIsEditMode(true)
     setIsModalOpen(true)
@@ -114,13 +126,15 @@ export default function PackagesPage() {
     setFormData({
       name: "",
       description: "",
-      destination: "",
-      duration: "",
       price: "",
-      maxGuests: "",
-      category: "",
-      inclusions: "",
-      exclusions: "",
+      poster: "",
+      slug: "",
+      areas: "",
+      food: "",
+      drinks: "",
+      parking: "",
+      businessBox: "",
+      requirements: "",
     })
   }
 
@@ -131,20 +145,22 @@ export default function PackagesPage() {
     setFormData({
       name: "",
       description: "",
-      destination: "",
-      duration: "",
       price: "",
-      maxGuests: "",
-      category: "",
-      inclusions: "",
-      exclusions: "",
+      poster: "",
+      slug: "",
+      areas: "",
+      food: "",
+      drinks: "",
+      parking: "",
+      businessBox: "",
+      requirements: "",
     })
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Tour Packages</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Packages</h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#0f3373] hover:bg-[#0a2a5c]"
@@ -170,75 +186,77 @@ export default function PackagesPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Package Name</TableHead>
-                <TableHead>Destination</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Max Guests</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Bookings</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredPackages.map((pkg) => (
-                <TableRow key={pkg.id}>
-                  <TableCell className="font-medium">{pkg.name}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <MapPin className="h-4 w-4 text-gray-400 mr-1" />
-                      {pkg.destination}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 text-gray-400 mr-1" />
-                      {pkg.duration}
-                    </div>
-                  </TableCell>
-                  <TableCell>${pkg.price}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 text-gray-400 mr-1" />
-                      {pkg.maxGuests}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <StatusBadge status={pkg.status} />
-                  </TableCell>
-                  <TableCell>{pkg.bookings}</TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(pkg)}
-                        className="p-1 text-gray-400 hover:text-[#0f3373]"
-                        title="Edit package"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(pkg)}
-                        className="p-1 text-gray-400 hover:text-red-600"
-                        title="Delete package"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </TableCell>
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-[#0f3373]" />
+              <span className="ml-2 text-gray-600">Loading packages...</span>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8">
+              <p className="text-red-600 mb-4">{error}</p>
+              <button
+                onClick={fetchPackages}
+                className="px-4 py-2 bg-[#0f3373] text-white rounded-md hover:bg-[#0a2a5c]"
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Package Name</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Bookings</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredPackages.map((pkg) => (
+                  <TableRow key={pkg.id}>
+                    <TableCell className="font-medium">{pkg.name}</TableCell>
+                    <TableCell>
+                      <div className="max-w-xs">
+                        <p className="text-sm text-gray-600 line-clamp-2">{pkg.description}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>${pkg.price}</TableCell>
+                    <TableCell>
+                      <StatusBadge status={pkg.status} />
+                    </TableCell>
+                    <TableCell>{pkg.bookings}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(pkg)}
+                          className="p-1 text-gray-400 hover:text-[#0f3373]"
+                          title="Edit package"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(pkg)}
+                          className="p-1 text-gray-400 hover:text-red-600"
+                          title="Delete package"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
 
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        title={isEditMode ? "Edit Tour Package" : "Add New Tour Package"}
+        title={isEditMode ? "Edit Package" : "Add New Package"}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -262,83 +280,96 @@ export default function PackagesPage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Destination</label>
-              <input
-                type="text"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
-                value={formData.destination}
-                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
-              <input
-                type="text"
-                required
-                placeholder="e.g., 3 days"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
-                value={formData.duration}
-                onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
               <input
                 type="number"
                 required
+                step="0.01"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Max Guests</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
               <input
-                type="number"
+                type="text"
                 required
+                placeholder="e.g., time-trial-experience"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
-                value={formData.maxGuests}
-                onChange={(e) => setFormData({ ...formData, maxGuests: e.target.value })}
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select
-              required
+            <label className="block text-sm font-medium text-gray-700 mb-1">Poster Image URL</label>
+            <input
+              type="url"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            >
-              <option value="">Select category</option>
-              <option value="Wildlife">Wildlife</option>
-              <option value="Culture">Culture</option>
-              <option value="Adventure">Adventure</option>
-              <option value="Leisure">Leisure</option>
-              <option value="Business">Business</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Inclusions</label>
-            <textarea
-              rows={2}
-              placeholder="What's included in this package..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
-              value={formData.inclusions}
-              onChange={(e) => setFormData({ ...formData, inclusions: e.target.value })}
+              placeholder="https://example.com/image.jpg"
+              value={formData.poster}
+              onChange={(e) => setFormData({ ...formData, poster: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Exclusions</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Areas & Features</label>
             <textarea
               rows={2}
-              placeholder="What's not included..."
+              placeholder="Exclusive VIP zone, View at finish line, etc. (comma separated)"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
-              value={formData.exclusions}
-              onChange={(e) => setFormData({ ...formData, exclusions: e.target.value })}
+              value={formData.areas}
+              onChange={(e) => setFormData({ ...formData, areas: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Food & Dining</label>
+            <textarea
+              rows={2}
+              placeholder="Welcome coffee, International food festival, etc. (comma separated)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
+              value={formData.food}
+              onChange={(e) => setFormData({ ...formData, food: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Drinks & Beverages</label>
+            <textarea
+              rows={2}
+              placeholder="Open bar, Aperitif, etc. (comma separated)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
+              value={formData.drinks}
+              onChange={(e) => setFormData({ ...formData, drinks: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Parking & Transportation</label>
+            <textarea
+              rows={2}
+              placeholder="Parking included, Transportation, etc. (comma separated)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
+              value={formData.parking}
+              onChange={(e) => setFormData({ ...formData, parking: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Business Box (Optional)</label>
+            <textarea
+              rows={2}
+              placeholder="Private zones, corporate packages, etc. (comma separated)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
+              value={formData.businessBox}
+              onChange={(e) => setFormData({ ...formData, businessBox: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Requirements (Optional)</label>
+            <textarea
+              rows={2}
+              placeholder="Bring your own bike, cycling experience, etc. (comma separated)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0f3373] focus:border-transparent resize-none"
+              value={formData.requirements}
+              onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
             />
           </div>
           <div className="flex justify-end space-x-3 pt-4">

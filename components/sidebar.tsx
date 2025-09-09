@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { LayoutDashboard, Users, Package, ShoppingCart, MessageCircle } from "lucide-react"
+import { LayoutDashboard, Users, Package, ShoppingCart, MessageCircle, Ticket } from "lucide-react"
+import { useAuth } from "@/contexts/auth-context"
 
 const menuItems = [
   {
@@ -19,15 +20,15 @@ const menuItems = [
 
 const menuGroups = [
   {
-    title: "TOUR MANAGEMENT",
+    title: "HOSPITALITY MANAGEMENT",
     items: [
       {
-        title: "Tour Packages",
+        title: "Packages",
         href: "/packages",
         icon: Package,
       },
       {
-        title: "Orders",
+        title: "Bookings",
         href: "/orders",
         icon: ShoppingCart,
       },
@@ -42,9 +43,9 @@ const menuGroups = [
         icon: Users,
       },
       {
-        title: "Communications",
-        href: "/communications",
-        icon: MessageCircle,
+        title: "Tickets",
+        href: "/tickets",
+        icon: Ticket,
       },
     ],
   },
@@ -57,6 +58,7 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const { user } = useAuth()
 
   return (
     <div className={cn("flex h-screen bg-white border-r border-gray-200 flex-col w-64", className)}>
@@ -76,11 +78,13 @@ export function Sidebar({ className }: SidebarProps) {
         <div className="rounded-full bg-gray-100 p-2 mb-2">
           <Avatar className="h-16 w-16">
             <AvatarImage src="/placeholder-user.jpg" alt="User" />
-            <AvatarFallback style={{ backgroundColor: "#0f3373", color: "white" }}>JD</AvatarFallback>
+            <AvatarFallback style={{ backgroundColor: "#0f3373", color: "white" }}>
+              {user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'A'}
+            </AvatarFallback>
           </Avatar>
         </div>
-        <p className="text-base font-semibold text-gray-900">John Doe</p>
-        <p className="text-sm text-gray-400">Tour Operator</p>
+        <p className="text-base font-semibold text-gray-900">{user?.name || 'Antoinette'}</p>
+        <p className="text-sm text-gray-400">Ticket Manager</p>
       </div>
 
       {/* Navigation */}

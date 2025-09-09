@@ -33,12 +33,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     // Mock authentication for Etike - replace with real API call
-    if (email === "operator@etike.rw" && password === "Pass123") {
+    if (email === "antoinette@etike.rw" && password === "Pass123") {
       const userData = {
         id: "1",
-        name: "Admin User",
+        name: "Antoinette",
         email: email,
-        role: "admin",
+        role: "ticket_manager",
       }
 
       setUser(userData)
